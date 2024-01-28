@@ -1,0 +1,129 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Catigory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Models\User;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+class CatigoryController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+    $catigory= Catigory::all();
+    $data= [
+        "stetus"=>200,
+        "Catigory"=>$catigory
+    ];
+    return response()->json($data, 200);
+    }
+
+
+
+    public function create(Request $request)
+    {
+    $validator=Validator::make($request->all(),['name'=>'required']);
+     if ($validator->fails()) {
+    $data= [
+        "status"=>422,
+        "message"=>$validator->messages()
+    ];
+      return response()->json($data, 422);
+    }else{
+$catigory= new Catigory;
+$catigory->name=$request->name;
+$catigory->save();
+$data = [
+    "status"=>200,
+    "message"=>"data create seccessfully"
+];
+return response()->json($data, 200);
+    }
+    }
+
+public function edit(Request $request, $id){
+$validator =Validator::make($request->all(), [
+    'name'=>'required'
+]);
+
+if ($validator->fails()) {
+$data=['status'=>422,
+'message'=>$validator->messages()
+];
+return response()->json($data, 422);
+}
+else{
+$catigory= Catigory::find($id);
+$catigory->name = $request->name;
+$catigory->save();
+$data=['status'=>200,
+'message'=>'data is updata'];
+return response()->json($data, 200);
+}
+
+
+}
+
+
+public function delete($id){
+    $catigory=Catigory::find($id);
+    $catigory->delete();
+    $data=["status"=>200,
+    "message"=>"catigory is delete"];
+    return response()->json($data,200);
+}
+
+
+
+
+public function createUser(Request $request)
+{
+    try {
+        //Validated
+        $validateUser = Validator::make($request->all(),
+        [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required'
+        ]);
+
+        if($validateUser->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validateUser->errors()
+            ], 401);
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User Created Successfully',
+            'token' => $user->createToken("API TOKEN")->plainTextToken
+        ], 200);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th->getMessage()
+        ], 500);
+    }
+}
+
+
+
+
+}
