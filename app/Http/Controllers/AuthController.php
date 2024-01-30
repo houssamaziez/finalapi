@@ -10,6 +10,26 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
+    public function userdata($id)
+    {
+        try {
+            // Find the user by ID
+            $user = User::findOrFail($id);
+
+            // Get all attributes of the user
+            $userData = $user->attributesToArray();
+
+            return response()->json(['data' => $userData], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Handle the case when the user is not found
+            return response()->json(['error' => 'User not found'], 404);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json(['error' => 'Something went wrong'], 500);
+        }
+    }
+
+
     public function createUser(Request $request)
     {
         try {
