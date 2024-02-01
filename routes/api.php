@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatigoryController;
+use App\Http\Controllers\TestController;
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -29,3 +30,4 @@ Route::delete('catigory/delete/{id}',[CatigoryController::class, 'delete']);
 Route::post('users/createUser', [AuthController::class,'createUser']);
 Route::post('users/loginUser', [AuthController::class,'loginUser']);
 Route::get('users/userdata/{id}', [AuthController::class,'userdata']);
+Route::post('mail', [TestController::class, 'index']);
