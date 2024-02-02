@@ -31,3 +31,4 @@ Route::post('users/createUser', [AuthController::class,'createUser']);
 Route::post('users/loginUser', [AuthController::class,'loginUser']);
 Route::get('users/userdata/{id}', [AuthController::class,'userdata']);
 Route::post('mail', [TestController::class, 'index']);
+Route::post('users/editUserPassword/{id}', [AuthController::class,'editUserPassword']);

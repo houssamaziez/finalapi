@@ -111,4 +111,24 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+
+    public function editUserPassword(Request $request, $id){
+        $validateUser =Validator::make($request->all(), [  'password'=>'required']);
+        if ($validateUser->fails()) {
+            $data=['status'=>422,
+            'message'=>$validateUser->messages()
+            ];
+            return response()->json($data, 422);
+            }
+            else{
+            $user= User::find($id);
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+            $data=['status'=>200,
+            'message'=>'password user is updata'];
+            return response()->json($data, 200);
+            }
+
+    }
 }
