@@ -19,7 +19,12 @@ class AuthController extends Controller
             // Get all attributes of the user
             $userData = $user->attributesToArray();
 
-            return response()->json(['data' => $userData], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'User create In Successfully',
+                'token' => $user->createToken("API TOKEN")->plainTextToken,
+                'user' => $user,
+            ], 200);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Handle the case when the user is not found
             return response()->json(['error' => 'User not found'], 404);
@@ -113,8 +118,6 @@ class AuthController extends Controller
             ], 500);
         }
     }
-
-
     public function editUserPassword(Request $request,){
         $validateUser =Validator::make($request->all(), [
              'password'=>'required', 'email'=>'required',  ]);
