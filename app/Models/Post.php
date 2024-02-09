@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Catigory extends Model
+class Post extends Model
 {
     use HasFactory;
-    protected $fillable= [
-        'name',
-        'image'
+    protected $fillable = [
+        'title',
+        'details',
+        'image',
+        'likes',
     ];
 }

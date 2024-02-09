@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Image;
+
 class CatigoryController extends Controller
 {
     /**
@@ -25,6 +27,55 @@ class CatigoryController extends Controller
     ];
     return response()->json($data, 200);
     }
+
+
+    public function store(Request $request)
+    {
+
+try {
+
+    $validateUser = Validator::make($request->all(),
+    [
+      'name' => 'required',
+      'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+  ]);
+  if($validateUser->fails()){
+      return response()->json([
+          'status' => false,
+          'message' => 'validation error',
+          'errors' => $validateUser->errors()
+      ], 401);
+  }else{
+      $catigory = new Catigory;
+      $catigory->name = $request->name;
+    //   add image
+      if($request->hasFile('image')){
+                $image= $request->file('image');
+                $filename = time() . '.' . $image->getClientOriginalExtension();
+              //   Image::make($image)->resize(300, 300)->save( public_path('/images/' . $filename ) );
+      $request->image->move('images', $filename);
+                $catigory->image="images/".'catigory'. $filename;
+                $catigory->save();
+              };
+              $catigory->save();
+              $data= [
+                  "stetus"=>200,
+                  "Catigory"=>$catigory
+              ];
+      return response()->json($data, 200);
+  }
+
+
+} catch (\Throwable $th) {
+    return response()->json([
+        'status' => false,
+        'message' => $th->getMessage()
+    ], 500);
+}
+
+
+}
+
 
 
 
@@ -84,46 +135,42 @@ public function delete($id){
 
 
 
-public function createUser(Request $request)
-{
-    try {
-        //Validated
-        $validateUser = Validator::make($request->all(),
-        [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required'
-        ]);
+// public function createUser(Request $request)
+// {
+//     try {
+//         //Validated
+//         $validateUser = Validator::make($request->all(),
+//         [
+//             'name' => 'required',
+//             'email' => 'required|email|unique:users,email',
+//             'password' => 'required'
+//         ]);
 
-        if($validateUser->fails()){
-            return response()->json([
-                'status' => false,
-                'message' => 'validation error',
-                'errors' => $validateUser->errors()
-            ], 401);
-        }
+//         if($validateUser->fails()){
+//             return response()->json([
+//                 'status' => false,
+//                 'message' => 'validation error',
+//                 'errors' => $validateUser->errors()
+//             ], 401);
+//         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+//         $user = User::create([
+//             'name' => $request->name,
+//             'email' => $request->email,
+//             'password' => Hash::make($request->password)
+//         ]);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'User Created Successfully',
-            'token' => $user->createToken("API TOKEN")->plainTextToken
-        ], 200);
+//         return response()->json([
+//             'status' => true,
+//             'message' => 'User Created Successfully',
+//             'token' => $user->createToken("API TOKEN")->plainTextToken
+//         ], 200);
 
-    } catch (\Throwable $th) {
-        return response()->json([
-            'status' => false,
-            'message' => $th->getMessage()
-        ], 500);
-    }
-}
-
-
-
-
+//     } catch (\Throwable $th) {
+//         return response()->json([
+//             'status' => false,
+//             'message' => $th->getMessage()
+//         ], 500);
+//     }
+// }
 }
