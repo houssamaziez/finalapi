@@ -29,6 +29,7 @@ Route::post('post/create/{id}',[PostController::class, 'create']);
 Route::post('post/store',[PostController::class, 'store']);
 Route::put('post/edit/{id}',[PostController::class, 'edit']);
 Route::delete('post/delete/{id}',[PostController::class, 'delete']);
+Route::get('post/data/{id}',[PostController::class, 'getpost']);
 
 
 

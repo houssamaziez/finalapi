@@ -16,7 +16,18 @@ class PostController extends Controller
     {
         //
     }
-
+    public function getpost($id)
+    {
+try {
+    $post = Post::findOrFail($id);
+    $postData = $post->attributesToArray();
+    return response()->json([
+        'status' => true,
+        'post' => $post,
+    ], 200);
+} catch (\Throwable $th) {
+    //throw $th;
+}    }
     /**
      * Show the form for creating a new resource.
      *
