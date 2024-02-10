@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CatigoryController;
 
 
@@ -27,11 +28,20 @@ Route::delete('catigory/delete/{id}',[CatigoryController::class, 'delete']);
 Route::get('post',[PostController::class,'index']);
 Route::post('post/create/{id}',[PostController::class, 'create']);
 Route::post('post/store',[PostController::class, 'store']);
-Route::put('post/edit/{id}',[PostController::class, 'edit']);
+Route::put('post/update/{id}',[PostController::class, 'update']);
+Route::put('post/likse/{postId}/{userId}',[PostController::class, 'updateLikes']);
 Route::delete('post/delete/{id}',[PostController::class, 'delete']);
 Route::get('post/data/{id}',[PostController::class, 'getpost']);
+Route::get('post/postsuser/{user_id}',[PostController::class, 'postsuser']);
 
 
+// commnet
+Route::get('post',[CommentController::class ,'index']);
+Route::post('commnet/{iduser}/{idpost}',[CommentController::class, 'create']);
+Route::post('post/store',[CommentController::class, 'store']);
+Route::put('post/edit/{id}',[CommentController::class, 'edit']);
+Route::delete('post/delete/{id}',[CommentController::class, 'delete']);
+Route::get('post/commnet/{postId}',[CommentController::class, 'getall']);
 
 
 
