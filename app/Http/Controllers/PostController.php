@@ -12,6 +12,9 @@ class PostController extends Controller
         $posts = Post::where('user_id', $user_id)->get();
         return  $posts;
     }
+
+
+
     public function getpost($id)
     {
 try {
@@ -29,11 +32,14 @@ try {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request, $id)
+    public function create(Request $request, $iduser, $catigory_id)
     {
         $validator =
         Validator::make($request->all(), [
             'title'=>"required",
+            'details'=>"required",
+            'user_id'=>"required",
+            'catigory_id'=>"required",
             'details'=>"required",
             'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -50,7 +56,9 @@ return response()->json($data);
 
          $post= new Post;
          $post->title=  $request->title;
-         $post->user_id= $id;
+         $post->user_id= $iduser;
+         $post->catigory_id=$catigory_id;
+
 
         //  $post->likes=[2323];
          $post->details=   $request->details;
@@ -165,26 +173,11 @@ return response()->json($data);
 
                     return response()->json($data);        }
     }
+     public function getallpostgatigory($id){
 
+        $posts = Post::where('catigory_id', $id)->get();
+        return  $posts;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $post)
-    {
-        //
-    }
+     }
 
 }

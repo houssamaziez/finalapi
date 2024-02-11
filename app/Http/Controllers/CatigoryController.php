@@ -48,6 +48,7 @@ try {
   }else{
       $catigory = new Catigory;
       $catigory->name = $request->name;
+
     //   add image
       if($request->hasFile('image')){
                 $image= $request->file('image');

@@ -13,5 +13,8 @@ class Post extends Model
         'details',
         'image',
         'likes',
+        'catigory_id',
+        'user_id',
+
     ];
 }
