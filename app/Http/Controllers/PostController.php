@@ -27,19 +27,31 @@ try {
 } catch (\Throwable $th) {
     //throw $th;
 }    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
+
+
+public function delete($post_id){
+    $post =Post::where('id',$post_id)->first();
+    $post->delete();
+    $data=["status"=>200,
+    "message"=>"post is delete"];
+    return response()->json($data,200);
+}
+
+
+
+
+
+
     public function create(Request $request, $iduser, $catigory_id)
     {
         $validator =
         Validator::make($request->all(), [
             'title'=>"required",
             'details'=>"required",
-            'user_id'=>"required",
-            'catigory_id'=>"required",
             'details'=>"required",
             'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -67,7 +79,7 @@ return response()->json($data);
             $filename = time() . '.' . $image->getClientOriginalExtension();
           //   Image::make($image)->resize(300, 300)->save( public_path('/images/' . $filename ) );
   $request->image->move('images', $filename);
-            $post->image="images/".'catigory'. $filename;
+            $post->image="images/". $filename;
             $post->save();
           };
          $post->save();

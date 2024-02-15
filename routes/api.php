@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::resource('catigory', CatigoryController::class);
 // Catigorys
 Route::get('catigory',[CatigoryController::class, 'index']);
-Route::post('catigory/create',[CatigoryController::class, 'create']);
+// Route::post('catigory/create',[CatigoryController::class, 'create']);
 Route::post('catigory/store',[CatigoryController::class, 'store']);
 Route::put('catigory/edit/{id}',[CatigoryController::class, 'edit']);
 Route::delete('catigory/delete/{id}',[CatigoryController::class, 'delete']);
@@ -37,11 +37,10 @@ Route::get('post/postsuser/{user_id}',[PostController::class, 'postsuser']);
 
 
 // commnet
-Route::get('post',[CommentController::class ,'index']);
+Route::get('commnet',[CommentController::class ,'index']);
 Route::post('commnet/{iduser}/{idpost}',[CommentController::class, 'create']);
-Route::post('post/store',[CommentController::class, 'store']);
-Route::put('post/edit/{id}',[CommentController::class, 'edit']);
-Route::delete('post/delete/{id}',[CommentController::class, 'delete']);
+ Route::put('commnet/edit/{id}',[CommentController::class, 'edit']);
+Route::delete('commnet/delete/{id}',[CommentController::class, 'delete']);
 Route::get('post/commnet/{postId}',[CommentController::class, 'getall']);
 
 

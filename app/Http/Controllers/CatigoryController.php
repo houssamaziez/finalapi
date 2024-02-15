@@ -55,7 +55,7 @@ try {
                 $filename = time() . '.' . $image->getClientOriginalExtension();
               //   Image::make($image)->resize(300, 300)->save( public_path('/images/' . $filename ) );
       $request->image->move('images', $filename);
-                $catigory->image="images/".'catigory'. $filename;
+                $catigory->image="images/". $filename;
                 $catigory->save();
               };
               $catigory->save();
@@ -80,26 +80,7 @@ try {
 
 
 
-    public function create(Request $request)
-    {
-    $validator=Validator::make($request->all(),['name'=>'required']);
-     if ($validator->fails()) {
-    $data= [
-        "status"=>422,
-        "message"=>$validator->messages()
-    ];
-      return response()->json($data, 422);
-    }else{
-$catigory= new Catigory;
-$catigory->name=$request->name;
-$catigory->save();
-$data = [
-    "status"=>200,
-    "message"=>"data create seccessfully"
-];
-return response()->json($data, 200);
-    }
-    }
+
 
 public function edit(Request $request, $id){
 $validator =Validator::make($request->all(), [
