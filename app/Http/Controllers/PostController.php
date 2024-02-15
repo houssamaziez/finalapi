@@ -9,7 +9,9 @@ class PostController extends Controller
 {
     public function postsuser($user_id)
     {
-        $posts = Post::where('user_id', $user_id)->get();
+        $posts = Post::where('user_id', $user_id)
+                  ->orderBy('created_at', 'desc')
+                  ->get();
         return  $posts;
     }
 
@@ -187,7 +189,8 @@ return response()->json($data);
     }
      public function getallpostgatigory($id){
 
-        $posts = Post::where('catigory_id', $id)->get();
+        $posts = Post::where('catigory_id', $id) ->orderBy('created_at', 'desc')
+                  ->get();
         return  $posts;
 
      }
