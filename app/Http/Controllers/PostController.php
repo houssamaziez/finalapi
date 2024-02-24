@@ -47,6 +47,8 @@ public function delete($post_id)
         $validator =
         Validator::make($request->all(), [
             'title' => 'required',
+            'wilaya' => 'required',
+            'price' => 'required',
             'details' => 'required',
             'details' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -62,6 +64,8 @@ public function delete($post_id)
         } else {
             $post = new Post;
             $post->title = $request->title;
+            $post->wilaya = $request->wilaya;
+            $post->price = $request->price;
             $post->user_id = $iduser;
             $post->catigory_id = $catigory_id;
 
@@ -172,10 +176,13 @@ public function delete($post_id)
         }
     }
 
-     public function getallpostgatigory($id)
+     public function getallpostgatigory($id, $wilaya)
      {
-         $posts = Post::where('catigory_id', $id)->orderBy('created_at', 'desc')
-                   ->get();
+         $posts = Post::where('catigory_id', $id)->
+                         where('wilaya', 'Batna 05')
+
+                        ->orderBy('created_at', 'desc')
+                      ->get();
 
          return  $posts;
      }
