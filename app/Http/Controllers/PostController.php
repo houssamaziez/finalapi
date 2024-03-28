@@ -178,12 +178,49 @@ public function delete($post_id)
 
      public function getallpostgatigory($id, $wilaya)
      {
-         $posts = Post::where('catigory_id', $id)->
-                         where('wilaya', 'Batna 05')
-
-                        ->orderBy('created_at', 'desc')
-                      ->get();
+         if ($wilaya == 'All') {
+             $posts = Post::where('catigory_id', $id)->
+                   orderBy('created_at', 'desc')
+                 ->get();
+         } else {
+             $posts = Post::where('catigory_id', $id)->
+                    where('wilaya', $wilaya)
+                   ->orderBy('created_at', 'desc')
+                 ->get();
+         }
 
          return  $posts;
      }
+
+        public function getpostgatigoryprofile($id, $wilaya, $idpost)
+        {
+            if ($wilaya == 'All') {
+                $posts = Post::where('catigory_id', $id)->
+                       where('id', '!=', $idpost)->
+                        orderBy('created_at', 'desc')
+                     ->get();
+            } else {
+                $posts = Post::where('catigory_id', $id)->
+                          where('wilaya', $wilaya)->
+                          where('id', '!=', $idpost)->
+                          orderBy('created_at', 'desc')
+                       ->get();
+            }
+
+            return  $posts;
+        }
+
+    public function search($query)
+    {
+        // Check if the query is "all"
+        if ($query == 'all') {
+            // Return all records
+            $results = Post::all();
+        } else {
+            // Perform the search using your model
+            $results = Post::where('title', 'LIKE', "%$query%")->get(); // Replace column_to_search with the actual column name you want to search
+        }
+
+        return $results;
+    }
 }

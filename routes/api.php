@@ -29,8 +29,9 @@ Route::put('post/likse/{postId}/{userId}', [PostController::class, 'updateLikes'
 Route::delete('post/delete/{id}', [PostController::class, 'delete']);
 Route::get('post/data/{id}', [PostController::class, 'getpost']);
 Route::get('post/catigory/idcatigory={id}/{wilaya}', [PostController::class, 'getallpostgatigory']);
+Route::get('post/catigory/idcatigory={id}/{wilaya}/postid={idpost}', [PostController::class, 'getpostgatigoryprofile']);
 Route::get('post/postsuser/{user_id}', [PostController::class, 'postsuser']);
-
+Route::get('post/search/keyword={query}', [PostController::class, 'search']);
 // commnet
 Route::get('commnet', [CommentController::class, 'index']);
 Route::post('commnet/{iduser}/{idpost}', [CommentController::class, 'create']);
