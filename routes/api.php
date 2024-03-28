@@ -19,7 +19,7 @@ Route::get('catigory', [CatigoryController::class, 'index']);
 Route::post('catigory/store', [CatigoryController::class, 'store']);
 Route::put('catigory/edit/{id}', [CatigoryController::class, 'edit']);
 Route::delete('catigory/delete/{id}', [CatigoryController::class, 'delete']);
-
+Route::get('catigory/search/keyword={query}', [CatigoryController::class, 'search']);
 // Posts
 Route::get('post', [PostController::class, 'index']);
 Route::post('post/create/id_user={iduser}/id_catigory={catigory_id}', [PostController::class, 'create']);
@@ -28,7 +28,7 @@ Route::put('post/update/{id}', [PostController::class, 'update']);
 Route::put('post/likse/{postId}/{userId}', [PostController::class, 'updateLikes']);
 Route::delete('post/delete/{id}', [PostController::class, 'delete']);
 Route::get('post/data/{id}', [PostController::class, 'getpost']);
-Route::get('post/catigory/idcatigory={id}/$wilaya', [PostController::class, 'getallpostgatigory']);
+Route::get('post/catigory/idcatigory={id}/{wilaya}', [PostController::class, 'getallpostgatigory']);
 Route::get('post/postsuser/{user_id}', [PostController::class, 'postsuser']);
 
 // commnet

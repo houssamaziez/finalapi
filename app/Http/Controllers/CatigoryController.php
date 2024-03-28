@@ -103,6 +103,20 @@ public function delete($id)
     return response()->json($data, 200);
 }
 
+    public function search($query)
+    {
+        // Check if the query is "all"
+        if ($query == 'all') {
+            // Return all records
+            $results = Catigory::all();
+        } else {
+            // Perform the search using your model
+            $results = Catigory::where('name', 'LIKE', "%$query%")->get(); // Replace column_to_search with the actual column name you want to search
+        }
+
+        return $results;
+    }
+
 // public function createUser(Request $request)
 // {
 //     try {
