@@ -25,13 +25,15 @@ Route::get('post', [PostController::class, 'index']);
 Route::post('post/create/id_user={iduser}/id_catigory={catigory_id}', [PostController::class, 'create']);
 Route::post('post/store', [PostController::class, 'store']);
 Route::put('post/update/{id}', [PostController::class, 'update']);
-Route::put('post/likse/{postId}/{userId}', [PostController::class, 'updateLikes']);
+Route::post('post/likse/{postId}/{userId}', [PostController::class, 'updateLikes']);
+Route::post('post/islikse/{postId}/{userId}', [PostController::class, 'isUserLikedPost']);
 Route::delete('post/delete/{id}', [PostController::class, 'delete']);
 Route::get('post/data/{id}', [PostController::class, 'getpost']);
 Route::get('post/catigory/idcatigory={id}/{wilaya}', [PostController::class, 'getallpostgatigory']);
 Route::get('post/catigory/idcatigory={id}/{wilaya}/postid={idpost}', [PostController::class, 'getpostgatigoryprofile']);
 Route::get('post/postsuser/{user_id}', [PostController::class, 'postsuser']);
 Route::get('post/search/keyword={query}', [PostController::class, 'search']);
+Route::post('post/imageUpload', [PostController::class, 'creates']);
 // commnet
 Route::get('commnet', [CommentController::class, 'index']);
 Route::post('commnet/{iduser}/{idpost}', [CommentController::class, 'create']);

@@ -51,7 +51,7 @@ public function delete($post_id)
             'price' => 'required',
             'details' => 'required',
             'details' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if ($validator->fails()) {
             $data = [
@@ -72,11 +72,28 @@ public function delete($post_id)
             //  $post->likes=[2323];
             $post->details = $request->details;
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $filename = time().'.'.$image->getClientOriginalExtension();
-                //   Image::make($image)->resize(300, 300)->save( public_path('/images/' . $filename ) );
-                $request->image->move('images', $filename);
-                $post->image = 'images/'.$filename;
+                // $image = $request->file('image');
+                // $filename = time().'.'.$image->getClientOriginalExtension();
+                // //   Image::make($image)->resize(300, 300)->save( public_path('/images/' . $filename ) );
+                // $request->image->move('images', $filename);
+
+                $imageList = [];
+
+                if ($request->hasFile('image')) {
+                    for ($i = 0; $i < count($request->file('image')); $i++) {
+                        $filename = time().'.'.$request->file('image')[$i]->getClientOriginalExtension();
+                        $newName = uniqid('', true).$filename;
+                        $request->file('image')[$i]->move('images', $newName);
+                        $imageList[] = $newName;
+                    }
+                }
+
+                // Convert array to JSON string
+                $imageListJson = json_encode($imageList);
+                // ------------------------------------
+                $post->image = $imageListJson;
+
+                // 'images/'.$filename;
                 $post->save();
             }
             $post->save();
@@ -89,6 +106,26 @@ public function delete($post_id)
         }
     }
 
+public function creates(Request $request)
+{
+    $request->validate([
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Example validation rules
+    ]);
+
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $imageName = time().'-'.$image->getClientOriginalName();
+            $image->move(public_path('images'), $imageName);
+            // You may also store the file paths in the database here
+        }
+
+        return back()->with('success', 'Images uploaded successfully.');
+    }
+
+    return back()->with('error', 'No images were uploaded.');
+}
+
+// ------------------------------------------------------------------------------------------
     public function updateLikes($postId, $userId)
     {
         // Retrieve the post by its ID
@@ -125,6 +162,35 @@ public function delete($post_id)
             return response()->json(['status' => 200, 'message' => 'User removed from likes'], 200);
         }
     }
+
+public function isUserLikedPost($postId, $userId)
+{
+    // Retrieve the post by its ID
+    $post = Post::find($postId);
+
+    if (! $post) {
+        // Handle the case when the post is not found
+        return response()->json(['status' => 404, 'message' => 'Post not found'], 404);
+    }
+
+    // Decode the likes JSON string to an array
+    $likes = json_decode($post->likes, true);
+
+    if (! $likes) {
+        $likes = [];
+    }
+
+    // Check if the user ID is in the likes array
+    $index = array_search($userId, $likes);
+
+    if ($index !== false) {
+        // If found, user has liked the post
+        return response()->json(['status' => 200, 'message' => true], 200);
+    } else {
+        // If not found, user has not liked the post
+        return response()->json(['status' => 200, 'message' => false], 200);
+    }
+}
 
     public function update(Request $request, $id)
     {
