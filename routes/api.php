@@ -47,3 +47,55 @@ Route::post('users/loginUser', [AuthController::class, 'loginUser']);
 Route::get('users/userdata/{id}', [AuthController::class, 'userdata']);
 Route::post('mail', [TestController::class, 'index']);
 Route::post('users/editUserPassword', [AuthController::class, 'editUserPassword']);
+
+Route::post('/notification', function (Request $requist) {
+    $SERVER_API_KEY = 'AAAAxcRob6s:APA91bFo2PVSl89sOz4jPEtm84Nc5T3hq4BmMoeUOX44HdVjPyPmeHsX-0PGUyfIsQPY88HQ_WOJfWUU_lJXUJ9S4zTtxu_JUqBnEw7xOv5cyUC2sBkFWWS2aJJUcwDC8v_QV-cRpSmB';
+
+    $token_1 = 'dWyWVtN0Rf6GAMmbXqy9k8:APA91bFz00O_wiQkcXVs092wT4K6uQSxScYVIgiF9fH7Ws6cy-i6OGAKJ2hcSLziachIob_TGGqknY95DaLzvxLogXvpcXluUkJaPMXKFsH8rIF2DI3UIBpvKVTiW5du5ESyZE7qX3u7';
+
+    $data = [
+
+        'registration_ids' => [
+            $token_1,
+        ],
+
+        'notification' => [
+
+            'title' => $requist->title,
+
+            'body' => $requist->description,
+
+            'sound' => 'default', // required for sound on ios
+
+        ],
+
+    ];
+
+    $dataString = json_encode($data);
+
+    $headers = [
+
+        'Authorization: key='.$SERVER_API_KEY,
+
+        'Content-Type: application/json',
+
+    ];
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+
+    curl_setopt($ch, CURLOPT_POST, true);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+    $response = curl_exec($ch);
+
+    dd($response);
+});
