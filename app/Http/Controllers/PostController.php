@@ -90,6 +90,7 @@ public function delete($post_id)
 
                 // Convert array to JSON string
                 $imageListJson = json_encode($imageList);
+
                 // ------------------------------------
                 $post->image = $imageListJson;
 
@@ -185,6 +186,7 @@ public function isUserLikedPost($postId, $userId)
 
     if ($index !== false) {
         // If found, user has liked the post
+
         return response()->json(['status' => 200, 'message' => true], 200);
     } else {
         // If not found, user has not liked the post

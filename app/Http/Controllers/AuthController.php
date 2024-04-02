@@ -45,6 +45,7 @@ class AuthController extends Controller
                     'wilaya' => 'required',
                     'email' => 'required|email|unique:users,email',
                     'password' => 'required',
+                    'tokennotification' => 'required',
                 ]);
 
             if ($validateUser->fails()) {
@@ -61,6 +62,7 @@ class AuthController extends Controller
                 'phone' => $request->phone,
                 'role' => $request->role,
                 'wilaya' => $request->wilaya,
+                'tokennotification' => $request->tokennotification,
                 'password' => Hash::make($request->password),
             ]);
 
@@ -140,4 +142,27 @@ class AuthController extends Controller
             return response()->json($data, 200);
         }
     }
+
+     public function updattoken(Request $request, $id)
+     {
+         $validator = Validator::make($request->all(), [
+             'tokennotification' => 'required',
+         ]);
+
+         if ($validator->fails()) {
+             $data = ['status' => 422,
+                 'message' => $validator->messages(),
+             ];
+
+             return response()->json($data, 422);
+         } else {
+             $user = User::find($id);
+             $user->tokennotification = $request->tokennotification;
+             $user->save();
+             $data = ['status' => 200,
+                 'message' => 'data is updata'];
+
+             return response()->json($data, 200);
+         }
+     }
 }
